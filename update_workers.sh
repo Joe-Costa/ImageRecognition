@@ -74,13 +74,17 @@ for host in "${HOSTS[@]}"; do
     fi
 
     # Pull latest changes
-    if ssh root@"$host" "cd /root/ImageRecognition && git pull" 2>/dev/null; then
+    pull_output=$(ssh root@"$host" "cd /root/ImageRecognition && git pull" 2>&1)
+    pull_result=$?
+
+    if [ $pull_result -eq 0 ]; then
         # Get current commit
         commit=$(ssh root@"$host" "cd /root/ImageRecognition && git log -1 --oneline" 2>/dev/null)
         log_success "$host: Updated - $commit"
         ((success_count++))
     else
         log_error "$host: Failed to pull changes"
+        log_error "  Error output: $pull_output"
         failed_hosts+=("$host")
     fi
 done
