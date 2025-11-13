@@ -57,10 +57,12 @@ def cmd_merge(args: argparse.Namespace) -> None:
     # Collect worker files
     worker_files = []
     for worker_id in range(num_workers):
-        worker_prefix = prefix.parent / f"worker_{worker_id}"
-        parquet_path = worker_prefix.with_suffix(".parquet")
-        faiss_path = worker_prefix.with_suffix(".faiss")
-        meta_path = worker_prefix.with_suffix(".meta.json")
+        # Worker files are in same directory: /path/to/imageindex/worker_0.parquet
+        base_dir = prefix.parent
+        worker_name = f"worker_{worker_id}"
+        parquet_path = base_dir / f"{worker_name}.parquet"
+        faiss_path = base_dir / f"{worker_name}.faiss"
+        meta_path = base_dir / f"{worker_name}.meta.json"
 
         if not parquet_path.exists():
             log(f"ERROR: Worker {worker_id} parquet file not found: {parquet_path}")
