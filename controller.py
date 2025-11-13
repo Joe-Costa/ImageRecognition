@@ -28,11 +28,12 @@ from typing import List, Dict, Tuple
 VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tiff"}
 
 # Worker configuration with RAM-based weighting
+# Using clip-ViT-L-14-336 (best quality, 768-dim, processes 336x336 images)
 WORKER_CONFIG = {
-    "duc212-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 8, "ram_gb": 15},
-    "duc213-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 8, "ram_gb": 15},
-    "duc214-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 8, "ram_gb": 15},
-    "duc17-40g.eng.qumulo.com": {"weight": 0.40, "batch_size": 32, "ram_gb": 62},
+    "duc212-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336"},
+    "duc213-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336"},
+    "duc214-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336"},
+    "duc17-40g.eng.qumulo.com": {"weight": 0.40, "batch_size": 10, "ram_gb": 62, "model": "clip-ViT-L-14-336"},
 }
 
 REMOTE_WORK_DIR = "/root/ImageRecognition"
@@ -250,6 +251,7 @@ def cmd_controller(args: argparse.Namespace) -> None:
 
         # Prepare worker command
         batch_size = WORKER_CONFIG[host]["batch_size"]
+        model_name = WORKER_CONFIG[host].get("model", "clip-ViT-B-32")
         remote_index_prefix = f"{REMOTE_INDEX_PREFIX}/worker_{worker_id}"
 
         worker_cmd = (
@@ -258,7 +260,8 @@ def cmd_controller(args: argparse.Namespace) -> None:
             f"--image-list {remote_list} "
             f"--index-prefix {remote_index_prefix} "
             f"--worker-id {worker_id} "
-            f"--batch-size {batch_size}"
+            f"--batch-size {batch_size} "
+            f"--model-name {model_name}"
         )
 
         log(f"  Starting worker {worker_id} on {host}...")
