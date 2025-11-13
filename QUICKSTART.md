@@ -12,15 +12,15 @@
 
 # 3. Run distributed indexing
 python3 controller.py \
-    --image-dir /Volumes/home/joe/images \
-    --index-prefix /Volumes/home/joe/imageindex
+    --image-dir /Volumes/files/home/joe/images \
+    --index-prefix /Volumes/files/home/joe/imageindex
 
 # 4. Query the index (runs on remote worker)
 python3 query_client.py \
     --text "sunset over mountains" \
     --top-k 10
 
-# Results will be copied to /Volumes/home/joe/image_results
+# Results will be copied to /Volumes/files/home/joe/image_results
 ```
 
 ## What Gets Created
@@ -28,7 +28,7 @@ python3 query_client.py \
 After successful indexing, you'll have:
 
 ```
-/Volumes/home/joe/imageindex/
+/Volumes/files/home/joe/imageindex/
 ├── worker_0.parquet         # Partial index from worker 0
 ├── worker_0.faiss
 ├── worker_0.meta.json
@@ -84,7 +84,7 @@ ssh root@duc212-100g.eng.qumulo.com "echo OK"
 ssh root@duc212-100g.eng.qumulo.com "ls /mnt/music/home/joe"
 
 # On Mac:
-ls /Volumes/home/joe
+ls /Volumes/files/home/joe
 ```
 
 ### Re-run failed worker manually
@@ -102,7 +102,7 @@ python3 worker_index.py \
 ### Merge partial indexes manually
 ```bash
 python3 merge_indexes.py \
-    --index-prefix /Volumes/home/joe/imageindex \
+    --index-prefix /Volumes/files/home/joe/imageindex \
     --num-workers 4
 ```
 
@@ -136,7 +136,7 @@ ssh root@duc212-100g.eng.qumulo.com "top -bn1 | head -20"
 ### Monitor index progress
 ```bash
 # Check partial index files
-watch -n 5 'ls -lh /Volumes/home/joe/imageindex/worker_*.parquet'
+watch -n 5 'ls -lh /Volumes/files/home/joe/imageindex/worker_*.parquet'
 
 # Count completed images per worker
 ssh root@duc212-100g.eng.qumulo.com "wc -l /root/ImageRecognition/worker_0_images.txt"
@@ -158,7 +158,7 @@ rm -rf work_*
 All queries run on remote workers (no local Python dependencies needed except standard library):
 
 ```bash
-# Find images of cars (copied to /Volumes/home/joe/image_results/match_TIMESTAMP_rank001.jpg)
+# Find images of cars (copied to /Volumes/files/home/joe/image_results/match_TIMESTAMP_rank001.jpg)
 python3 query_client.py \
     --text "a red sports car" \
     --top-k 5
@@ -186,7 +186,7 @@ python3 query_client.py \
 
 ### Result Files
 
-Matching images are copied to `/Volumes/home/joe/image_results/` with names like:
+Matching images are copied to `/Volumes/files/home/joe/image_results/` with names like:
 - `match_20250113_143022_rank001.jpg` (best match)
 - `match_20250113_143022_rank002.jpg` (2nd best)
 - `match_20250113_143022_rank003.jpg` (3rd best)

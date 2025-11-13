@@ -27,7 +27,7 @@ DEFAULT_WORKER = "duc17-40g.eng.qumulo.com"  # Use the high-RAM worker for queri
 REMOTE_INDEX_PREFIX = "/mnt/music/home/joe/imageindex"
 REMOTE_RESULTS_DIR = "/mnt/music/home/joe/image_results"
 REMOTE_SCRIPT_PATH = "/root/ImageRecognition/remote_query.py"
-LOCAL_RESULTS_DIR = "/Volumes/home/joe/image_results"
+LOCAL_RESULTS_DIR = "/Volumes/files/home/joe/image_results"
 
 
 # --------- Utility functions --------- #

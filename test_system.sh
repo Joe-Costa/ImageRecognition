@@ -115,19 +115,19 @@ done
 
 # Test 7: Check local SMB mount
 log "Checking local SMB mount..."
-if [ ! -d "/Volumes/home/joe" ]; then
-    echo "ERROR: Local SMB mount /Volumes/home/joe not found"
+if [ ! -d "/Volumes/files/home/joe" ]; then
+    echo "ERROR: Local SMB mount /Volumes/files/home/joe not found"
     exit 1
 fi
 log_success "Local SMB mount OK"
 
 # Test 8: Check if image directory exists
 log "Checking image directory..."
-if [ ! -d "/Volumes/home/joe/images" ]; then
-    log_info "Image directory /Volumes/home/joe/images not found"
+if [ ! -d "/Volumes/files/home/joe/images" ]; then
+    log_info "Image directory /Volumes/files/home/joe/images not found"
     log_info "You may need to create it or adjust the path"
 else
-    image_count=$(find /Volumes/home/joe/images -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | wc -l)
+    image_count=$(find /Volumes/files/home/joe/images -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | wc -l)
     log_success "Image directory exists with ~$image_count images"
 fi
 
@@ -138,6 +138,6 @@ echo "========================================"
 echo
 log_info "Next steps:"
 echo "  1. If workers not set up: ./setup_workers.sh"
-echo "  2. Run indexing: python3 controller.py --image-dir /Volumes/home/joe/images --index-prefix /Volumes/home/joe/imageindex"
-echo "  3. Query index: python3 images_search.py query --index-prefix /Volumes/home/joe/imageindex --text 'your query'"
+echo "  2. Run indexing: python3 controller.py --image-dir /Volumes/files/home/joe/images --index-prefix /Volumes/files/home/joe/imageindex"
+echo "  3. Query index: python3 query_client.py --text 'your query'"
 echo

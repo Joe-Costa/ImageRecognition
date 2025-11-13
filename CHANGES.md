@@ -54,8 +54,8 @@ pip install sentence-transformers torch faiss-cpu polars pillow
 python3 query_client.py --text "sunset"
 
 # Results automatically copied to:
-/Volumes/home/joe/image_results/match_20250113_143022_rank001.jpg
-/Volumes/home/joe/image_results/match_20250113_143022_rank002.jpg
+/Volumes/files/home/joe/image_results/match_20250113_143022_rank001.jpg
+/Volumes/files/home/joe/image_results/match_20250113_143022_rank002.jpg
 ...
 ```
 
@@ -86,7 +86,7 @@ pip install -r requirements.txt
 
 # Run query locally
 python3 images_search.py query \
-    --index-prefix /Volumes/home/joe/imageindex \
+    --index-prefix /Volumes/files/home/joe/imageindex \
     --text "sunset" \
     --top-k 10
 
@@ -104,7 +104,7 @@ python3 query_client.py \
 
 # Results:
 # 1. Displayed in terminal
-# 2. Automatically copied to /Volumes/home/joe/image_results
+# 2. Automatically copied to /Volumes/files/home/joe/image_results
 # 3. Renamed with timestamp
 ```
 
@@ -142,7 +142,7 @@ Edit `query_client.py` to change defaults:
 DEFAULT_WORKER = "duc17-40g.eng.qumulo.com"  # Which worker to use
 REMOTE_INDEX_PREFIX = "/mnt/music/home/joe/imageindex"
 REMOTE_RESULTS_DIR = "/mnt/music/home/joe/image_results"
-LOCAL_RESULTS_DIR = "/Volumes/home/joe/image_results"
+LOCAL_RESULTS_DIR = "/Volumes/files/home/joe/image_results"
 ```
 
 ### Remote Query Defaults
@@ -169,7 +169,7 @@ python3 query_client.py --text "test query" --no-copy-results
 ### 3. Test Query (with copy)
 ```bash
 python3 query_client.py --text "sunset" --top-k 3
-ls -lh /Volumes/home/joe/image_results
+ls -lh /Volumes/files/home/joe/image_results
 ```
 
 ## Benefits
@@ -238,7 +238,7 @@ A: Yes: `python3 query_client.py --text "query" --no-copy-results`
 A: Still at `/mnt/music/home/joe/images` (unchanged). Results are copies.
 
 ### Q: Can I delete old result images?
-A: Yes: `rm /Volumes/home/joe/image_results/match_202501*`
+A: Yes: `rm /Volumes/files/home/joe/image_results/match_202501*`
 
 ## Future Enhancements
 

@@ -34,7 +34,7 @@ Controller merges partial indexes --> Unified index
 ### On Mac (Controller)
 - Python 3.8+
 - SSH access to all workers as `root`
-- SMB mount: `/Volumes/home/joe` → `/mnt/music/home/joe` (NFS on workers)
+- SMB mount: `/Volumes/files/home/joe` → `/mnt/music/home/joe` (NFS on workers)
 
 ### On Workers
 - Ubuntu 24.04
@@ -93,12 +93,12 @@ The setup script will show a summary. All workers should report success.
 
 ```bash
 python3 controller.py \
-    --image-dir /Volumes/home/joe/images \
-    --index-prefix /Volumes/home/joe/imageindex
+    --image-dir /Volumes/files/home/joe/images \
+    --index-prefix /Volumes/files/home/joe/imageindex
 ```
 
 **What happens:**
-1. Controller scans for images in `/Volumes/home/joe/images`
+1. Controller scans for images in `/Volumes/files/home/joe/images`
 2. Splits work: 40% to duc17, 20% each to duc212/213/214
 3. Deploys image lists to workers via SCP
 4. Launches worker processes via SSH (parallel execution)
@@ -108,9 +108,9 @@ python3 controller.py \
 
 **Output files:**
 ```
-/Volumes/home/joe/imageindex.parquet      # Paths + embeddings
-/Volumes/home/joe/imageindex.faiss        # Vector index
-/Volumes/home/joe/imageindex.meta.json    # Metadata
+/Volumes/files/home/joe/imageindex.parquet      # Paths + embeddings
+/Volumes/files/home/joe/imageindex.faiss        # Vector index
+/Volumes/files/home/joe/imageindex.meta.json    # Metadata
 ```
 
 ### Step 2: Query the Index
@@ -130,7 +130,7 @@ python3 query_client.py \
 4. Worker performs semantic search
 5. Worker copies matching images to `/mnt/music/home/joe/image_results`
 6. Images renamed as `match_YYYYMMDD_HHMMSS_rank001.jpg`
-7. Results accessible on Mac at `/Volumes/home/joe/image_results`
+7. Results accessible on Mac at `/Volumes/files/home/joe/image_results`
 
 **Query options:**
 ```bash
@@ -229,7 +229,7 @@ ssh root@duc212-100g.eng.qumulo.com "ls /mnt/music/home/joe/images"
 
 Check mount on Mac:
 ```bash
-ls /Volumes/home/joe/images
+ls /Volumes/files/home/joe/images
 ```
 
 ### Worker Hangs During Model Download
@@ -245,7 +245,7 @@ ssh root@duc212-100g.eng.qumulo.com "ls -lh ~/.cache/torch/sentence_transformers
 
 Verify all worker outputs exist:
 ```bash
-ls -lh /Volumes/home/joe/imageindex/worker_*.{parquet,faiss,meta.json}
+ls -lh /Volumes/files/home/joe/imageindex/worker_*.{parquet,faiss,meta.json}
 ```
 
 ### Re-run After Failure
@@ -313,7 +313,7 @@ Comment out the merge section in `controller.py`:
 Then manually merge later:
 ```bash
 python3 merge_indexes.py \
-    --index-prefix /Volumes/home/joe/imageindex \
+    --index-prefix /Volumes/files/home/joe/imageindex \
     --num-workers 4
 ```
 
@@ -322,7 +322,7 @@ python3 merge_indexes.py \
 Instead of scanning, provide a pre-generated list:
 ```bash
 # Create image list
-find /Volumes/home/joe/images -type f -name "*.jpg" > all_images.txt
+find /Volumes/files/home/joe/images -type f -name "*.jpg" > all_images.txt
 
 # Modify controller.py to read from this file instead of scanning
 ```
@@ -332,13 +332,13 @@ find /Volumes/home/joe/images -type f -name "*.jpg" > all_images.txt
 Test with a subset first:
 ```bash
 # Create test directory
-mkdir -p /Volumes/home/joe/images_test
-cp /Volumes/home/joe/images/*.jpg /Volumes/home/joe/images_test/ | head -100
+mkdir -p /Volumes/files/home/joe/images_test
+cp /Volumes/files/home/joe/images/*.jpg /Volumes/files/home/joe/images_test/ | head -100
 
 # Run indexing on test set
 python3 controller.py \
-    --image-dir /Volumes/home/joe/images_test \
-    --index-prefix /Volumes/home/joe/imageindex_test
+    --image-dir /Volumes/files/home/joe/images_test \
+    --index-prefix /Volumes/files/home/joe/imageindex_test
 ```
 
 ## License

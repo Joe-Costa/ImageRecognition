@@ -128,9 +128,9 @@ After deployment, workers will have:
 | Purpose | Path on Worker | Path on Mac |
 |---------|----------------|-------------|
 | Code repository | `/root/ImageRecognition/` | `/Users/joe/Python_Projects/ImageRecognition/` |
-| Image source | `/mnt/music/home/joe/images` | `/Volumes/home/joe/images` |
-| Index output | `/mnt/music/home/joe/imageindex` | `/Volumes/home/joe/imageindex` |
-| Query results | `/mnt/music/home/joe/image_results` | `/Volumes/home/joe/image_results` |
+| Image source | `/mnt/music/home/joe/images` | `/Volumes/files/home/joe/images` |
+| Index output | `/mnt/music/home/joe/imageindex` | `/Volumes/files/home/joe/imageindex` |
+| Query results | `/mnt/music/home/joe/image_results` | `/Volumes/files/home/joe/image_results` |
 
 ## Common Tasks
 

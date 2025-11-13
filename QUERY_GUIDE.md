@@ -11,7 +11,7 @@ The query system runs entirely on remote workers - your Mac only needs Python's 
 python3 query_client.py --text "sunset over mountains"
 
 # View results on Mac
-open /Volumes/home/joe/image_results
+open /Volumes/files/home/joe/image_results
 ```
 
 ## Architecture
@@ -33,7 +33,7 @@ NFS: /mnt/music/home/joe/image_results
     |
     | (accessible via SMB on Mac)
     |
-Mac: /Volumes/home/joe/image_results
+Mac: /Volumes/files/home/joe/image_results
 ```
 
 ## Usage Examples
@@ -81,7 +81,7 @@ python3 query_client.py \
 
 Matching images are copied to:
 - **Remote**: `/mnt/music/home/joe/image_results/`
-- **Mac**: `/Volumes/home/joe/image_results/`
+- **Mac**: `/Volumes/files/home/joe/image_results/`
 
 File naming format:
 ```
@@ -139,13 +139,13 @@ Where:
 4. **View Results** (Mac)
    ```bash
    # Open in Finder
-   open /Volumes/home/joe/image_results
+   open /Volumes/files/home/joe/image_results
 
    # List recent results
-   ls -lth /Volumes/home/joe/image_results | head -20
+   ls -lth /Volumes/files/home/joe/image_results | head -20
 
    # View specific query's results
-   ls /Volumes/home/joe/image_results/match_20250113_143022_*
+   ls /Volumes/files/home/joe/image_results/match_20250113_143022_*
    ```
 
 ## Performance
@@ -192,7 +192,7 @@ The query is working, but no good matches. Try:
 
 ```bash
 # Check if SMB mount is active
-ls /Volumes/home/joe/image_results
+ls /Volumes/files/home/joe/image_results
 
 # If not mounted, remount SMB share
 # (Finder -> Go -> Connect to Server -> smb://your-server/home/joe)
@@ -221,45 +221,45 @@ scp remote_query.py root@duc17-40g.eng.qumulo.com:/root/image_detection/
 
 ```bash
 # List all result files
-ls -lh /Volumes/home/joe/image_results
+ls -lh /Volumes/files/home/joe/image_results
 
 # Count total results
-ls /Volumes/home/joe/image_results/match_*.jpg | wc -l
+ls /Volumes/files/home/joe/image_results/match_*.jpg | wc -l
 ```
 
 ### Find Results by Date
 
 ```bash
 # Today's results
-ls /Volumes/home/joe/image_results/match_$(date +%Y%m%d)_*
+ls /Volumes/files/home/joe/image_results/match_$(date +%Y%m%d)_*
 
 # Specific date (e.g., Jan 13, 2025)
-ls /Volumes/home/joe/image_results/match_20250113_*
+ls /Volumes/files/home/joe/image_results/match_20250113_*
 
 # Last hour
-find /Volumes/home/joe/image_results -name "match_*.jpg" -mmin -60
+find /Volumes/files/home/joe/image_results -name "match_*.jpg" -mmin -60
 ```
 
 ### Clean Up Old Results
 
 ```bash
 # Delete all results
-rm /Volumes/home/joe/image_results/match_*
+rm /Volumes/files/home/joe/image_results/match_*
 
 # Delete results older than 7 days
-find /Volumes/home/joe/image_results -name "match_*" -mtime +7 -delete
+find /Volumes/files/home/joe/image_results -name "match_*" -mtime +7 -delete
 
 # Delete specific query's results
-rm /Volumes/home/joe/image_results/match_20250113_143022_*
+rm /Volumes/files/home/joe/image_results/match_20250113_143022_*
 ```
 
 ### Organize Results by Query
 
 ```bash
 # Create subdirectory for a query
-mkdir -p /Volumes/home/joe/image_results/cars
-mv /Volumes/home/joe/image_results/match_20250113_143022_* \
-   /Volumes/home/joe/image_results/cars/
+mkdir -p /Volumes/files/home/joe/image_results/cars
+mv /Volumes/files/home/joe/image_results/match_20250113_143022_* \
+   /Volumes/files/home/joe/image_results/cars/
 ```
 
 ## Direct Worker Queries (Advanced)

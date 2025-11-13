@@ -8,8 +8,8 @@ and final index merging.
 
 Usage:
   python controller.py \
-      --image-dir /Volumes/home/joe/images \
-      --index-prefix /Volumes/home/joe/imageindex \
+      --image-dir /Volumes/files/home/joe/images \
+      --index-prefix /Volumes/files/home/joe/imageindex \
       --hosts-file ./hosts \
       --workers-script ./worker_index.py
 """
@@ -351,12 +351,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--image-dir",
         required=True,
-        help="Local directory containing images (e.g., /Volumes/home/joe/images).",
+        help="Local directory containing images (e.g., /Volumes/files/home/joe/images).",
     )
     p.add_argument(
         "--index-prefix",
         required=True,
-        help="Local prefix for final index files (e.g., /Volumes/home/joe/imageindex).",
+        help="Local prefix for final index files (e.g., /Volumes/files/home/joe/imageindex).",
     )
     p.add_argument(
         "--hosts-file",
