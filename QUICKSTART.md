@@ -6,7 +6,8 @@
 # 1. Test system
 ./test_system.sh
 
-# 2. Setup workers (first time only)
+# 2. Deploy to workers via GitHub (first time only)
+# Workers will clone https://github.com/Joe-Costa/ImageRecognition
 ./setup_workers.sh
 
 # 3. Run distributed indexing
@@ -89,7 +90,7 @@ ls /Volumes/home/joe
 ### Re-run failed worker manually
 ```bash
 ssh root@duc212-100g.eng.qumulo.com "
-cd /root/image_detection && \
+cd /root/ImageRecognition && \
 python3 worker_index.py \
   --image-list worker_0_images.txt \
   --index-prefix /mnt/music/home/joe/imageindex/worker_0 \
@@ -138,14 +139,14 @@ ssh root@duc212-100g.eng.qumulo.com "top -bn1 | head -20"
 watch -n 5 'ls -lh /Volumes/home/joe/imageindex/worker_*.parquet'
 
 # Count completed images per worker
-ssh root@duc212-100g.eng.qumulo.com "wc -l /root/image_detection/worker_0_images.txt"
+ssh root@duc212-100g.eng.qumulo.com "wc -l /root/ImageRecognition/worker_0_images.txt"
 ```
 
 ### Clean up after run
 ```bash
 # Remove worker temp files (on each worker)
 for host in $(cat hosts); do
-    ssh root@$host "rm -rf /root/image_detection/work_*"
+    ssh root@$host "rm -rf /root/ImageRecognition/work_*"
 done
 
 # Remove local work directory

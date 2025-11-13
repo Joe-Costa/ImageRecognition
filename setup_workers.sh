@@ -146,9 +146,27 @@ except ImportError as e:
     }
     log_success "All packages verified"
 
-    # Create working directories
-    log "Creating working directories..."
-    ssh root@"$host" "mkdir -p /root/image_detection /mnt/music/home/joe/imageindex" || {
+    # Clone GitHub repository if not present
+    log "Checking for GitHub repository..."
+    if ! ssh root@"$host" "test -d /root/ImageRecognition/.git && echo 'OK'" | grep -q "OK"; then
+        log_warn "Repository not found, cloning from GitHub..."
+        ssh root@"$host" "cd /root && git clone https://github.com/Joe-Costa/ImageRecognition.git" || {
+            log_error "Failed to clone repository"
+            return 1
+        }
+        log_success "Repository cloned"
+    else
+        log_success "Repository already exists"
+        # Pull latest changes
+        log "Pulling latest changes..."
+        ssh root@"$host" "cd /root/ImageRecognition && git pull" || {
+            log_warn "Failed to pull latest changes (continuing anyway)"
+        }
+    fi
+
+    # Create results directory
+    log "Creating results directory..."
+    ssh root@"$host" "mkdir -p /mnt/music/home/joe/imageindex /mnt/music/home/joe/image_results" || {
         log_error "Failed to create directories"
         return 1
     }

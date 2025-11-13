@@ -35,7 +35,7 @@ WORKER_CONFIG = {
     "duc17-40g.eng.qumulo.com": {"weight": 0.40, "batch_size": 32, "ram_gb": 62},
 }
 
-REMOTE_WORK_DIR = "/root/image_detection"
+REMOTE_WORK_DIR = "/root/ImageRecognition"
 REMOTE_IMAGE_DIR = "/mnt/music/home/joe/images"
 REMOTE_INDEX_PREFIX = "/mnt/music/home/joe/imageindex"
 

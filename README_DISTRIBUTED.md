@@ -41,7 +41,8 @@ Controller merges partial indexes --> Unified index
 - Python 3.12.3
 - NFS mount: `/mnt/music/home/joe` accessible
 - SSH key-based authentication for `root` user
-- Project directory at `/root/image_detection`
+- Git installed (`apt-get install git`)
+- GitHub repository cloned to `/root/ImageRecognition`
 
 ## Setup
 
@@ -52,9 +53,21 @@ cd /Users/joe/Python_Projects/ImageRecognition
 pip install -r requirements.txt
 ```
 
-### 2. Setup Workers
+### 2. Deploy to Workers via GitHub
 
-Run the setup script to install dependencies on all workers:
+First, clone the repository on each worker:
+
+```bash
+# On each worker (or automated via setup script)
+ssh root@duc212-100g.eng.qumulo.com "cd /root && git clone https://github.com/Joe-Costa/ImageRecognition.git"
+ssh root@duc213-100g.eng.qumulo.com "cd /root && git clone https://github.com/Joe-Costa/ImageRecognition.git"
+ssh root@duc214-100g.eng.qumulo.com "cd /root && git clone https://github.com/Joe-Costa/ImageRecognition.git"
+ssh root@duc17-40g.eng.qumulo.com "cd /root && git clone https://github.com/Joe-Costa/ImageRecognition.git"
+```
+
+### 3. Setup Workers
+
+Run the setup script to install dependencies and verify setup:
 
 ```bash
 ./setup_workers.sh
@@ -63,11 +76,14 @@ Run the setup script to install dependencies on all workers:
 This will:
 - Check SSH connectivity
 - Verify NFS mounts
+- Check for GitHub repository (clones if missing, pulls updates if present)
 - Install Python packages (sentence-transformers, faiss-cpu, polars, pillow, numpy)
 - Create working directories
 - Verify installations
 
-### 3. Verify Setup
+**Note**: The setup script now handles GitHub cloning automatically!
+
+### 4. Verify Setup
 
 The setup script will show a summary. All workers should report success.
 
@@ -152,7 +168,7 @@ WORKER_CONFIG = {
 Edit these constants in `controller.py` if needed:
 
 ```python
-REMOTE_WORK_DIR = "/root/image_detection"        # Worker project directory
+REMOTE_WORK_DIR = "/root/ImageRecognition"       # Worker project directory (GitHub clone)
 REMOTE_IMAGE_DIR = "/mnt/music/home/joe/images"  # NFS image path
 REMOTE_INDEX_PREFIX = "/mnt/music/home/joe/imageindex"  # NFS index path
 ```
@@ -185,7 +201,7 @@ ssh root@duc212-100g.eng.qumulo.com "ps aux | grep worker_index.py"
 ssh root@duc212-100g.eng.qumulo.com "free -h"
 
 # Check worker logs (if redirected)
-ssh root@duc212-100g.eng.qumulo.com "tail -f /root/image_detection/worker_0.log"
+ssh root@duc212-100g.eng.qumulo.com "tail -f /root/ImageRecognition/worker_0.log"
 ```
 
 ## Troubleshooting
@@ -240,7 +256,7 @@ If a worker fails, you can:
 
 Or manually re-run a single worker:
 ```bash
-ssh root@duc212-100g.eng.qumulo.com "cd /root/image_detection && \
+ssh root@duc212-100g.eng.qumulo.com "cd /root/ImageRecognition && \
   python3 worker_index.py \
     --image-list worker_0_images.txt \
     --index-prefix /mnt/music/home/joe/imageindex/worker_0 \

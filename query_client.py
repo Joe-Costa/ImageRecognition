@@ -26,7 +26,7 @@ from typing import Optional
 DEFAULT_WORKER = "duc17-40g.eng.qumulo.com"  # Use the high-RAM worker for queries
 REMOTE_INDEX_PREFIX = "/mnt/music/home/joe/imageindex"
 REMOTE_RESULTS_DIR = "/mnt/music/home/joe/image_results"
-REMOTE_SCRIPT_PATH = "/root/image_detection/remote_query.py"
+REMOTE_SCRIPT_PATH = "/root/ImageRecognition/remote_query.py"
 LOCAL_RESULTS_DIR = "/Volumes/home/joe/image_results"
 
 
@@ -86,8 +86,8 @@ def deploy_remote_script(host: str) -> bool:
 
     log(f"Deploying remote_query.py to {host}...")
 
-    # Create remote directory
-    ssh_exec(host, "mkdir -p /root/image_detection", capture_output=True)
+    # Create remote directory (should already exist from git clone)
+    ssh_exec(host, "mkdir -p /root/ImageRecognition", capture_output=True)
 
     # Copy script
     if not scp_file(local_script, host, REMOTE_SCRIPT_PATH):
@@ -133,7 +133,7 @@ def cmd_query_client(args: argparse.Namespace) -> None:
     copy_flag = "--copy-results" if args.copy_results else "--no-copy-results"
 
     remote_cmd = (
-        f"cd /root/image_detection && "
+        f"cd /root/ImageRecognition && "
         f"python3 remote_query.py "
         f"--index-prefix {REMOTE_INDEX_PREFIX} "
         f"--text '{query_text}' "

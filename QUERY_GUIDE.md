@@ -271,7 +271,7 @@ If you want to run queries directly on a worker (bypassing the Mac client):
 ssh root@duc17-40g.eng.qumulo.com
 
 # Run query directly
-cd /root/image_detection
+cd /root/ImageRecognition
 python3 remote_query.py \
     --index-prefix /mnt/music/home/joe/imageindex \
     --text "sunset" \
