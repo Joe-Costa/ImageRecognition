@@ -28,12 +28,12 @@ from typing import List, Dict, Tuple
 VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tiff"}
 
 # Worker configuration with RAM-based weighting
-# Using clip-ViT-L-14-336px (best quality, 768-dim, processes 336x336 images)
+# Using clip-ViT-L-14 (better quality than B-32, 768-dim embeddings)
 WORKER_CONFIG = {
-    "duc212-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336px"},
-    "duc213-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336px"},
-    "duc214-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 2, "ram_gb": 15, "model": "clip-ViT-L-14-336px"},
-    "duc17-40g.eng.qumulo.com": {"weight": 0.40, "batch_size": 10, "ram_gb": 62, "model": "clip-ViT-L-14-336px"},
+    "duc212-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 4, "ram_gb": 15, "model": "clip-ViT-L-14"},
+    "duc213-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 4, "ram_gb": 15, "model": "clip-ViT-L-14"},
+    "duc214-100g.eng.qumulo.com": {"weight": 0.20, "batch_size": 4, "ram_gb": 15, "model": "clip-ViT-L-14"},
+    "duc17-40g.eng.qumulo.com": {"weight": 0.40, "batch_size": 16, "ram_gb": 62, "model": "clip-ViT-L-14"},
 }
 
 REMOTE_WORK_DIR = "/root/ImageRecognition"
