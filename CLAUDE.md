@@ -1,0 +1,3 @@
+## Guiding principals:
+
+- No emojis!

@@ -1,5 +1,22 @@
-sentence-transformers 
-torch 
-pillow 
-polars 
-faiss-cpu
+# Python dependencies for distributed image indexing system
+#
+# NOTE: These are only needed on WORKER HOSTS (Linux)
+# The Mac controller only needs standard library Python 3.x
+#
+# On workers, install with:
+#   ssh root@worker-host "python3 -m pip install -r requirements.txt"
+# Or use setup_workers.sh to install on all workers automatically
+
+# Core ML libraries (worker hosts only)
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0
+torch>=2.0.0
+
+# Data processing (worker hosts only)
+polars>=0.19.0
+numpy>=1.24.0
+
+# Image handling (worker hosts only)
+pillow>=10.0.0
+
+# Mac controller requirements: NONE (only uses standard library)
