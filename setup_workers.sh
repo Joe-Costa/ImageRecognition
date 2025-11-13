@@ -117,11 +117,24 @@ setup_worker() {
     fi
     log_success "pip available"
 
-    # Install Python packages
-    log "Installing Python packages..."
+    # Create virtual environment if it doesn't exist
+    log "Setting up Python virtual environment..."
+    if ! ssh root@"$host" "test -d /root/ImageRecognition/venv && echo 'OK'" | grep -q "OK"; then
+        log "  Creating venv..."
+        ssh root@"$host" "cd /root/ImageRecognition && python3 -m venv venv" || {
+            log_error "Failed to create virtual environment"
+            return 1
+        }
+        log_success "  Virtual environment created"
+    else
+        log_success "  Virtual environment already exists"
+    fi
+
+    # Install Python packages in virtual environment
+    log "Installing Python packages in venv..."
     for package in "${PACKAGES[@]}"; do
         log "  Installing $package..."
-        if ssh root@"$host" "python3 -m pip install -q $package"; then
+        if ssh root@"$host" "/root/ImageRecognition/venv/bin/pip install -q $package"; then
             log_success "    $package installed"
         else
             log_error "    Failed to install $package"
@@ -131,7 +144,7 @@ setup_worker() {
 
     # Verify installations
     log "Verifying package installations..."
-    ssh root@"$host" "python3 -c '
+    ssh root@"$host" "/root/ImageRecognition/venv/bin/python -c '
 import sys
 try:
     import sentence_transformers

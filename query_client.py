@@ -134,7 +134,7 @@ def cmd_query_client(args: argparse.Namespace) -> None:
 
     remote_cmd = (
         f"cd /root/ImageRecognition && "
-        f"python3 remote_query.py "
+        f"venv/bin/python remote_query.py "
         f"--index-prefix {REMOTE_INDEX_PREFIX} "
         f"--text '{query_text}' "
         f"--top-k {top_k} "

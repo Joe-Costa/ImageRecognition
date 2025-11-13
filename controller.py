@@ -254,7 +254,7 @@ def cmd_controller(args: argparse.Namespace) -> None:
 
         worker_cmd = (
             f"cd {REMOTE_WORK_DIR} && "
-            f"python3 worker_index.py "
+            f"venv/bin/python worker_index.py "
             f"--image-list {remote_list} "
             f"--index-prefix {remote_index_prefix} "
             f"--worker-id {worker_id} "
