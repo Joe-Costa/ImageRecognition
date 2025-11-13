@@ -1,0 +1,5 @@
+sentence-transformers 
+torch 
+pillow 
+polars 
+faiss-cpu
