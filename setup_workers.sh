@@ -135,18 +135,17 @@ setup_worker() {
         }
     fi
 
-    # Create virtual environment if it doesn't exist
+    # Create virtual environment (force recreate to ensure it's clean)
     log "Setting up Python virtual environment..."
-    if ! ssh root@"$host" "test -d /root/ImageRecognition/venv && echo 'OK'" | grep -q "OK"; then
-        log "  Creating venv..."
-        ssh root@"$host" "cd /root/ImageRecognition && python3 -m venv venv" || {
-            log_error "Failed to create virtual environment"
-            return 1
-        }
-        log_success "  Virtual environment created"
-    else
-        log_success "  Virtual environment already exists"
-    fi
+    log "  Removing old venv if exists..."
+    ssh root@"$host" "rm -rf /root/ImageRecognition/venv"
+
+    log "  Creating fresh venv..."
+    ssh root@"$host" "cd /root/ImageRecognition && python3 -m venv venv" || {
+        log_error "Failed to create virtual environment"
+        return 1
+    }
+    log_success "  Virtual environment created"
 
     # Install Python packages in virtual environment
     log "Installing Python packages in venv..."
