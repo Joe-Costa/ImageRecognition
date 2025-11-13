@@ -46,8 +46,11 @@ if [ ! -f "$HOSTS_FILE" ]; then
     exit 1
 fi
 
-# Read hosts from file
-mapfile -t HOSTS < <(grep -v '^#' "$HOSTS_FILE" | grep -v '^[[:space:]]*$')
+# Read hosts from file (compatible with macOS bash)
+HOSTS=()
+while IFS= read -r line; do
+    [[ -n "$line" && ! "$line" =~ ^# ]] && HOSTS+=("$line")
+done < "$HOSTS_FILE"
 
 if [ ${#HOSTS[@]} -eq 0 ]; then
     log_error "No hosts found in $HOSTS_FILE"
