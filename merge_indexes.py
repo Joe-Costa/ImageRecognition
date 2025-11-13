@@ -156,13 +156,14 @@ def cmd_merge(args: argparse.Namespace) -> None:
             log(f"ERROR: Worker {wf['worker_id']} faiss index has wrong dimension: {worker_index.d} vs {embedding_dim}")
             sys.exit(1)
 
-        # Extract vectors from worker index
-        worker_vectors = faiss.vector_to_array(
-            faiss.downcast_index(worker_index.index if hasattr(worker_index, 'index') else worker_index).get_xb()
-        ).reshape(-1, embedding_dim)
+        # Extract vectors from worker index using reconstruct_n
+        n_vectors = worker_index.ntotal
+        worker_vectors = np.zeros((n_vectors, embedding_dim), dtype='float32')
+        for i in range(n_vectors):
+            worker_index.reconstruct(i, worker_vectors[i])
 
         merged_index.add(worker_vectors)
-        log(f"    Added {worker_vectors.shape[0]} vectors (total now: {merged_index.ntotal})")
+        log(f"    Added {n_vectors} vectors (total now: {merged_index.ntotal})")
 
     # Save merged Faiss index
     merged_faiss = prefix.with_suffix(".faiss")
