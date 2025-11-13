@@ -106,6 +106,19 @@ setup_worker() {
     fi
     log_success "Python 3 found"
 
+    # Check and install python3-venv
+    log "Checking python3-venv..."
+    if ! ssh root@"$host" "dpkg -l python3-venv | grep -q ^ii" > /dev/null 2>&1; then
+        log_warn "python3-venv not found, installing..."
+        ssh root@"$host" "apt-get update && apt-get install -y python3-venv" || {
+            log_error "Failed to install python3-venv"
+            return 1
+        }
+        log_success "python3-venv installed"
+    else
+        log_success "python3-venv available"
+    fi
+
     # Check pip
     log "Checking pip..."
     if ! ssh root@"$host" "python3 -m pip --version" > /dev/null 2>&1; then
