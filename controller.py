@@ -309,20 +309,18 @@ def cmd_controller(args: argparse.Namespace) -> None:
             log(f"  Worker {worker_id} on {host}")
         sys.exit(1)
 
-    # Now merge indexes
-    log(f"\nStarting index merge...")
+    # Now merge indexes using remote merge client
+    log(f"\nStarting index merge on remote worker...")
 
-    # Run merge script
-    merge_script = Path(__file__).parent / "merge_indexes.py"
-    if not merge_script.exists():
-        log("ERROR: merge_indexes.py not found")
+    # Use merge_client.py to run merge on a worker (no local ML dependencies needed)
+    merge_client = Path(__file__).parent / "merge_client.py"
+    if not merge_client.exists():
+        log("ERROR: merge_client.py not found")
         sys.exit(1)
 
-    # Translate index prefix to local path
     merge_cmd = [
         "python3",
-        str(merge_script),
-        "--index-prefix", str(index_prefix_local),
+        str(merge_client),
         "--num-workers", str(len(hosts))
     ]
 
